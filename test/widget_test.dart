@@ -7,26 +7,31 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:stride/data/database/app_database.dart';
+import 'package:stride/locator.dart';
 
 import 'package:stride/main.dart';
+import 'package:stride/ui/home/home_screen.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
+
+  setUp(() {
+    locator.overrideLazily<AppDatabase>(() => AppDatabase.memory());
+  });
+
+  tearDown(() {
+    locator.get<AppDatabase>().close();
+  });
+
+  testWidgets('Smoke test', (WidgetTester tester) async {
     // Build our app and trigger a frame.
     await tester.pumpWidget(const MyApp());
+    await tester.pumpAndSettle();
 
-    // Verify that our counter starts at 0.
-    // expect(find.text('0'), findsOneWidget);
-    // expect(find.text('1'), findsNothing);
+    expect(find.byType(HomeScreen), findsOneWidget);
 
-    // // Tap the '+' icon and trigger a frame.
-    // await tester.tap(find.byIcon(Icons.add));
-    // await tester.pump();
-
-    // // Verify that our counter has incremented.
-    // expect(find.text('0'), findsNothing);
-    // expect(find.text('1'), findsOneWidget);
-
-    expect(find.byType(MyApp), matchesGoldenFile('app.png'));
+    // workaround for timer issue
+    await tester.pumpWidget(Container());
+    await tester.pumpAndSettle();
   });
 }
