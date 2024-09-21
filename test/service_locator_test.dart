@@ -27,8 +27,40 @@ void main() {
       locator.add<_TestService>(_SubTestService1());
       expect(locator.get<_TestService>(), isA<_SubTestService1>());
 
-      locator.add<_TestService>(_SubTestService2());
+      locator.override<_TestService>(_SubTestService2());
       expect(locator.get<_TestService>(), isA<_SubTestService2>());
+    });
+
+    test("lazy test", () {
+      locator.addLazy<_TestService>(() => _TestService());
+      expect(locator.services.length, 0);
+      expect(locator.lazyInitializers.length, 1);
+
+      locator.get<_TestService>();
+      expect(locator.services.length, 1);
+      expect(locator.lazyInitializers.length, 0);
+    });
+
+    test("lazy override test", () {
+      locator.addLazy<_TestService>(() => _TestService());
+      expect(locator.services.length, 0);
+      expect(locator.lazyInitializers.length, 1);
+
+      locator.get<_TestService>();
+      expect(locator.services.length, 1);
+      expect(locator.lazyInitializers.length, 0);
+
+      locator.overrideLazily<_TestService>(() => _SubTestService1());
+      expect(locator.services.length, 0);
+      expect(locator.lazyInitializers.length, 1);
+    });
+
+    test("lazy provides the same instance", () {
+      locator.addLazy<_TestService>(() => _TestService());
+      final service1 = locator.get<_TestService>();
+      final service2 = locator.get<_TestService>();
+
+      expect(service1 == service2, true);
     });
   });
 }
