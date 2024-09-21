@@ -1,14 +1,15 @@
-import 'package:flutter/foundation.dart';
-import 'package:loon/loon.dart';
+import 'package:stride/data/database/app_database.dart';
+
+import 'data/habit_repo.dart';
 
 final di = _DIContainer();
 
 class _DIContainer {
-  // all app dependencies that require future initialization
-  // should be initialized here
+  late final AppDatabase db = AppDatabase();
+
   Future<void> init() async {
-    // loon peristence
-    Loon.configure(persistor: FilePersistor(), enableLogging: kDebugMode);
-    await Loon.hydrate();
+
   }
+
+  late final HabitRepo habitRepo = HabitRepo(db);
 }

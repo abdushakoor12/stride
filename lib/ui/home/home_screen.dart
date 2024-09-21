@@ -1,10 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:loon/widgets/query_stream_builder.dart';
 import 'package:stride/data/habit.dart';
 import 'package:stride/data/habit_completion.dart';
-import 'package:stride/data/stores.dart';
+import 'package:stride/di.dart';
 import 'package:stride/ui/add_habit/add_habit_screen.dart';
 import 'package:stride/ui/calendar/calendar_screen.dart';
 import 'package:stride/utils/color_ext.dart';
@@ -25,10 +24,9 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
 
-    final stream = habitStore.stream();
-    _subscription = stream.listen((value) {
+    _subscription = di.habitRepo.watchHabits().listen((value) {
       setState(() {
-        habits = value.map((e) => e.data).toList();
+        habits = value;
       });
     });
   }
@@ -72,16 +70,10 @@ class _HomeScreenState extends State<HomeScreen> {
                     fontSize: 20,
                   ),
                 ),
-                trailing: QueryStreamBuilder<HabitCompletion>(
-                    query: habitCompletionStore.where(
-                      (e) =>
-                          e.data.habitId == habit.id &&
-                          e.data.key ==
-                              HabitCompletion.getCompletionKey(
-                                  habit.id, DateTime.now()),
-                    ),
+                trailing: StreamBuilder(
+                    stream: di.habitRepo.watchHabitCompletion(habit.id, DateTime.now()),
                     builder: (context, snaps) {
-                      final isCompleted = snaps.isNotEmpty;
+                      final isCompleted = snaps.data != null;
                       return GestureDetector(
                         onTap: () {
                           final key = HabitCompletion.getCompletionKey(
@@ -90,14 +82,9 @@ class _HomeScreenState extends State<HomeScreen> {
                           );
 
                           if (isCompleted) {
-                            habitCompletionStore.doc(key).delete();
+                            di.habitRepo.deleteHabitCompletion(habit.id, DateTime.now());
                           } else {
-                            habitCompletionStore
-                                .doc(key)
-                                .create(HabitCompletion(
-                                  habitId: habit.id,
-                                  timestamp: DateTime.now(),
-                                ));
+                            di.habitRepo.insertHabitCompletion(habit.id, DateTime.now());
                           }
                         },
                         child: Container(
@@ -116,7 +103,8 @@ class _HomeScreenState extends State<HomeScreen> {
                               : const SizedBox(),
                         ),
                       );
-                    })),
+                    }),
+            ),
           );
         },
       ),

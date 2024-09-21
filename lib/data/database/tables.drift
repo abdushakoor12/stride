@@ -1,0 +1,17 @@
+CREATE TABLE habitRecords (
+  id TEXT NOT NULL PRIMARY KEY,
+  name TEXT NOT NULL,
+  color TEXT NOT NULL,
+  createdAt INTEGER NOT NULL
+);
+
+CREATE TABLE habitCompletionRecords (
+  habitId TEXT REFERENCES habitRecords(id) NOT NULL,
+  dateKey TEXT NOT NULL,
+  createdAt INTEGER NOT NULL,
+  PRIMARY KEY (habitId, dateKey)
+);
+
+completionOfHabitOnDate: SELECT * FROM habitCompletionRecords WHERE habitId = ? AND dateKey = ? LIMIT 1;
+
+completionOfHabitsOnDate: SELECT * FROM habitCompletionRecords WHERE dateKey = ?;

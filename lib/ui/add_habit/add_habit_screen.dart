@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:stride/data/habit.dart';
-import 'package:stride/data/stores.dart';
+import 'package:stride/di.dart';
 import 'package:stride/utils/color_ext.dart';
 import 'package:stride/utils/generate_id.dart';
 
@@ -74,14 +74,12 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
                   return;
                 }
 
-                final habit = Habit(
-                  id: generateId(),
+                di.habitRepo.insertHabit(Habit(
                   name: name,
                   color: color,
-                  timestamp: DateTime.now(),
-                );
+                  timestamp: DateTime.now(), id: generateId(),
+                ));
 
-                habitStore.doc(habit.id).create(habit);
                 Navigator.pop(context);
               },
               label: const Text('Save'),

@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:loon/loon.dart';
 import 'package:stride/data/habit_completion.dart';
-import 'package:stride/data/stores.dart';
+import 'package:stride/di.dart';
 
 class CalendarScreen extends StatelessWidget {
   const CalendarScreen({super.key});
@@ -56,12 +55,10 @@ class CalendarScreen extends StatelessWidget {
                 ...List.generate(calendarChangeNotifier.emptyDaysAtStart,
                     (index) => const SizedBox()),
                 ...calendarChangeNotifier.daysOfMonth
-                    .map((day) => QueryStreamBuilder<HabitCompletion>(
-                        query: habitCompletionStore.where(
-                          (e) =>
-                              e.data.dateKey == HabitCompletion.getDateKey(day),
-                        ),
-                        builder: (context, snaps) {
+                    .map((day) => StreamBuilder(
+                        stream: di.habitRepo.watchHabitCompletions(day),
+                        builder: (context, snapshot) {
+                          final completions = snapshot.data ?? [];
                           return Container(
                               margin: const EdgeInsets.all(5),
                               decoration: BoxDecoration(
@@ -88,7 +85,7 @@ class CalendarScreen extends StatelessWidget {
                                         spacing: 2,
                                         runSpacing: 2,
                                         children: [
-                                          for (final _ in snaps)
+                                          for (final _ in completions)
                                             Container(
                                               width: 5,
                                               height: 5,
@@ -115,6 +112,7 @@ final calendarChangeNotifier = CalendarChangeNotifier();
 
 class CalendarChangeNotifier extends ChangeNotifier {
   MonthTime _monthTime = MonthTime.now();
+
   MonthTime get monthTime => _monthTime;
 
   List<DateTime> get daysOfMonth => _monthTime.daysOfMonth;
