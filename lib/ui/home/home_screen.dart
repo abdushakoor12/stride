@@ -26,9 +26,11 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
 
     _subscription = habitRepo.watchHabits().listen((value) {
-      setState(() {
-        habits = value;
-      });
+      if (mounted) {
+        setState(() {
+          habits = value;
+        });
+      }
     });
   }
 
