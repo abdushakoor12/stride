@@ -7,12 +7,18 @@ part 'app_database.g.dart';
   include: {'tables.drift'},
 )
 class AppDatabase extends _$AppDatabase {
-AppDatabase() : super(_openConnection());
+  AppDatabase() : super(_openConnection());
 
   @override
   int get schemaVersion => 1;
 
   static QueryExecutor _openConnection() {
-    return driftDatabase(name: 'stride_database.db');
+    return driftDatabase(
+      name: 'stride_database.db',
+      web: DriftWebOptions(
+        sqlite3Wasm: Uri.parse("sqlite3.wasm"),
+        driftWorker: Uri.parse("drift_worker.js"),
+      ),
+    );
   }
 }
