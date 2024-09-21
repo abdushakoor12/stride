@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:loon/loon.dart';
 import 'package:stride/data/habit_completion.dart';
-import 'package:stride/data/stores.dart';
 
 class CalendarScreen extends StatelessWidget {
   const CalendarScreen({super.key});
@@ -55,55 +53,55 @@ class CalendarScreen extends StatelessWidget {
                         )),
                 ...List.generate(calendarChangeNotifier.emptyDaysAtStart,
                     (index) => const SizedBox()),
-                ...calendarChangeNotifier.daysOfMonth
-                    .map((day) => QueryStreamBuilder<HabitCompletion>(
-                        query: habitCompletionStore.where(
-                          (e) =>
-                              e.data.dateKey == HabitCompletion.getDateKey(day),
-                        ),
-                        builder: (context, snaps) {
-                          return Container(
-                              margin: const EdgeInsets.all(5),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                color: Colors.black.withOpacity(0.1),
-                              ),
-                              child: Stack(
-                                children: [
-                                  Positioned(
-                                      bottom: 3,
-                                      right: 0,
-                                      left: 0,
-                                      child: Text(
-                                        day.day.toString(),
-                                        textAlign: TextAlign.center,
-                                        style: const TextStyle(
-                                          fontSize: 12,
-                                        ),
-                                      )),
-                                  Positioned.fill(
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(4.0),
-                                      child: Wrap(
-                                        spacing: 2,
-                                        runSpacing: 2,
-                                        children: [
-                                          for (final _ in snaps)
-                                            Container(
-                                              width: 5,
-                                              height: 5,
-                                              decoration: const BoxDecoration(
-                                                shape: BoxShape.circle,
-                                                color: Colors.green,
-                                              ),
-                                            ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ));
-                        }))
+                // ...calendarChangeNotifier.daysOfMonth
+                //     .map((day) => QueryStreamBuilder<HabitCompletion>(
+                //         query: habitCompletionStore.where(
+                //           (e) =>
+                //               e.data.dateKey == HabitCompletion.getDateKey(day),
+                //         ),
+                //         builder: (context, snaps) {
+                //           return Container(
+                //               margin: const EdgeInsets.all(5),
+                //               decoration: BoxDecoration(
+                //                 borderRadius: BorderRadius.circular(10),
+                //                 color: Colors.black.withOpacity(0.1),
+                //               ),
+                //               child: Stack(
+                //                 children: [
+                //                   Positioned(
+                //                       bottom: 3,
+                //                       right: 0,
+                //                       left: 0,
+                //                       child: Text(
+                //                         day.day.toString(),
+                //                         textAlign: TextAlign.center,
+                //                         style: const TextStyle(
+                //                           fontSize: 12,
+                //                         ),
+                //                       )),
+                //                   Positioned.fill(
+                //                     child: Padding(
+                //                       padding: const EdgeInsets.all(4.0),
+                //                       child: Wrap(
+                //                         spacing: 2,
+                //                         runSpacing: 2,
+                //                         children: [
+                //                           for (final _ in snaps)
+                //                             Container(
+                //                               width: 5,
+                //                               height: 5,
+                //                               decoration: const BoxDecoration(
+                //                                 shape: BoxShape.circle,
+                //                                 color: Colors.green,
+                //                               ),
+                //                             ),
+                //                         ],
+                //                       ),
+                //                     ),
+                //                   ),
+                //                 ],
+                //               ));
+                //         }))
               ],
             ),
           );
