@@ -1,12 +1,12 @@
 CREATE TABLE habitRecords (
-  id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  id TEXT NOT NULL PRIMARY KEY,
   name TEXT NOT NULL,
   color TEXT NOT NULL,
   createdAt INTEGER NOT NULL
 );
 
 CREATE TABLE habitCompletionRecords (
-  habitId TEXT NOT NULL,
+  habitId TEXT REFERENCES habitRecords(id) NOT NULL,
   dateKey TEXT NOT NULL,
   createdAt INTEGER NOT NULL,
   PRIMARY KEY (habitId, dateKey)
