@@ -13,6 +13,6 @@ AppDatabase() : super(_openConnection());
   int get schemaVersion => 1;
 
   static QueryExecutor _openConnection() {
-    return driftDatabase(name: 'my_database');
+    return driftDatabase(name: 'stride_database.db');
   }
 }
