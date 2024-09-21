@@ -3,11 +3,11 @@
 part of 'app_database.dart';
 
 // ignore_for_file: type=lint
-class Habits extends Table with TableInfo<Habits, Habit> {
+class HabitRecords extends Table with TableInfo<HabitRecords, HabitRecord> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  Habits(this.attachedDatabase, [this._alias]);
+  HabitRecords(this.attachedDatabase, [this._alias]);
   static const VerificationMeta _idMeta = const VerificationMeta('id');
   late final GeneratedColumn<int> id = GeneratedColumn<int>(
       'id', aliasedName, false,
@@ -40,9 +40,9 @@ class Habits extends Table with TableInfo<Habits, Habit> {
   String get aliasedName => _alias ?? actualTableName;
   @override
   String get actualTableName => $name;
-  static const String $name = 'habits';
+  static const String $name = 'habitRecords';
   @override
-  VerificationContext validateIntegrity(Insertable<Habit> instance,
+  VerificationContext validateIntegrity(Insertable<HabitRecord> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
@@ -73,9 +73,9 @@ class Habits extends Table with TableInfo<Habits, Habit> {
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  Habit map(Map<String, dynamic> data, {String? tablePrefix}) {
+  HabitRecord map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return Habit(
+    return HabitRecord(
       id: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
       name: attachedDatabase.typeMapping
@@ -88,20 +88,20 @@ class Habits extends Table with TableInfo<Habits, Habit> {
   }
 
   @override
-  Habits createAlias(String alias) {
-    return Habits(attachedDatabase, alias);
+  HabitRecords createAlias(String alias) {
+    return HabitRecords(attachedDatabase, alias);
   }
 
   @override
   bool get dontWriteConstraints => true;
 }
 
-class Habit extends DataClass implements Insertable<Habit> {
+class HabitRecord extends DataClass implements Insertable<HabitRecord> {
   final int id;
   final String name;
   final String color;
   final int createdAt;
-  const Habit(
+  const HabitRecord(
       {required this.id,
       required this.name,
       required this.color,
@@ -116,8 +116,8 @@ class Habit extends DataClass implements Insertable<Habit> {
     return map;
   }
 
-  HabitsCompanion toCompanion(bool nullToAbsent) {
-    return HabitsCompanion(
+  HabitRecordsCompanion toCompanion(bool nullToAbsent) {
+    return HabitRecordsCompanion(
       id: Value(id),
       name: Value(name),
       color: Value(color),
@@ -125,10 +125,10 @@ class Habit extends DataClass implements Insertable<Habit> {
     );
   }
 
-  factory Habit.fromJson(Map<String, dynamic> json,
+  factory HabitRecord.fromJson(Map<String, dynamic> json,
       {ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
-    return Habit(
+    return HabitRecord(
       id: serializer.fromJson<int>(json['id']),
       name: serializer.fromJson<String>(json['name']),
       color: serializer.fromJson<String>(json['color']),
@@ -146,15 +146,16 @@ class Habit extends DataClass implements Insertable<Habit> {
     };
   }
 
-  Habit copyWith({int? id, String? name, String? color, int? createdAt}) =>
-      Habit(
+  HabitRecord copyWith(
+          {int? id, String? name, String? color, int? createdAt}) =>
+      HabitRecord(
         id: id ?? this.id,
         name: name ?? this.name,
         color: color ?? this.color,
         createdAt: createdAt ?? this.createdAt,
       );
-  Habit copyWithCompanion(HabitsCompanion data) {
-    return Habit(
+  HabitRecord copyWithCompanion(HabitRecordsCompanion data) {
+    return HabitRecord(
       id: data.id.present ? data.id.value : this.id,
       name: data.name.present ? data.name.value : this.name,
       color: data.color.present ? data.color.value : this.color,
@@ -164,7 +165,7 @@ class Habit extends DataClass implements Insertable<Habit> {
 
   @override
   String toString() {
-    return (StringBuffer('Habit(')
+    return (StringBuffer('HabitRecord(')
           ..write('id: $id, ')
           ..write('name: $name, ')
           ..write('color: $color, ')
@@ -178,25 +179,25 @@ class Habit extends DataClass implements Insertable<Habit> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is Habit &&
+      (other is HabitRecord &&
           other.id == this.id &&
           other.name == this.name &&
           other.color == this.color &&
           other.createdAt == this.createdAt);
 }
 
-class HabitsCompanion extends UpdateCompanion<Habit> {
+class HabitRecordsCompanion extends UpdateCompanion<HabitRecord> {
   final Value<int> id;
   final Value<String> name;
   final Value<String> color;
   final Value<int> createdAt;
-  const HabitsCompanion({
+  const HabitRecordsCompanion({
     this.id = const Value.absent(),
     this.name = const Value.absent(),
     this.color = const Value.absent(),
     this.createdAt = const Value.absent(),
   });
-  HabitsCompanion.insert({
+  HabitRecordsCompanion.insert({
     this.id = const Value.absent(),
     required String name,
     required String color,
@@ -204,7 +205,7 @@ class HabitsCompanion extends UpdateCompanion<Habit> {
   })  : name = Value(name),
         color = Value(color),
         createdAt = Value(createdAt);
-  static Insertable<Habit> custom({
+  static Insertable<HabitRecord> custom({
     Expression<int>? id,
     Expression<String>? name,
     Expression<String>? color,
@@ -218,12 +219,12 @@ class HabitsCompanion extends UpdateCompanion<Habit> {
     });
   }
 
-  HabitsCompanion copyWith(
+  HabitRecordsCompanion copyWith(
       {Value<int>? id,
       Value<String>? name,
       Value<String>? color,
       Value<int>? createdAt}) {
-    return HabitsCompanion(
+    return HabitRecordsCompanion(
       id: id ?? this.id,
       name: name ?? this.name,
       color: color ?? this.color,
@@ -251,7 +252,7 @@ class HabitsCompanion extends UpdateCompanion<Habit> {
 
   @override
   String toString() {
-    return (StringBuffer('HabitsCompanion(')
+    return (StringBuffer('HabitRecordsCompanion(')
           ..write('id: $id, ')
           ..write('name: $name, ')
           ..write('color: $color, ')
@@ -261,12 +262,12 @@ class HabitsCompanion extends UpdateCompanion<Habit> {
   }
 }
 
-class HabitCompletions extends Table
-    with TableInfo<HabitCompletions, HabitCompletion> {
+class HabitCompletionRecords extends Table
+    with TableInfo<HabitCompletionRecords, HabitCompletionRecord> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  HabitCompletions(this.attachedDatabase, [this._alias]);
+  HabitCompletionRecords(this.attachedDatabase, [this._alias]);
   static const VerificationMeta _habitIdMeta =
       const VerificationMeta('habitId');
   late final GeneratedColumn<String> habitId = GeneratedColumn<String>(
@@ -294,9 +295,10 @@ class HabitCompletions extends Table
   String get aliasedName => _alias ?? actualTableName;
   @override
   String get actualTableName => $name;
-  static const String $name = 'habitCompletions';
+  static const String $name = 'habitCompletionRecords';
   @override
-  VerificationContext validateIntegrity(Insertable<HabitCompletion> instance,
+  VerificationContext validateIntegrity(
+      Insertable<HabitCompletionRecord> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
@@ -324,9 +326,9 @@ class HabitCompletions extends Table
   @override
   Set<GeneratedColumn> get $primaryKey => {habitId, dateKey};
   @override
-  HabitCompletion map(Map<String, dynamic> data, {String? tablePrefix}) {
+  HabitCompletionRecord map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return HabitCompletion(
+    return HabitCompletionRecord(
       habitId: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}habitId'])!,
       dateKey: attachedDatabase.typeMapping
@@ -337,8 +339,8 @@ class HabitCompletions extends Table
   }
 
   @override
-  HabitCompletions createAlias(String alias) {
-    return HabitCompletions(attachedDatabase, alias);
+  HabitCompletionRecords createAlias(String alias) {
+    return HabitCompletionRecords(attachedDatabase, alias);
   }
 
   @override
@@ -347,11 +349,12 @@ class HabitCompletions extends Table
   bool get dontWriteConstraints => true;
 }
 
-class HabitCompletion extends DataClass implements Insertable<HabitCompletion> {
+class HabitCompletionRecord extends DataClass
+    implements Insertable<HabitCompletionRecord> {
   final String habitId;
   final String dateKey;
   final int createdAt;
-  const HabitCompletion(
+  const HabitCompletionRecord(
       {required this.habitId, required this.dateKey, required this.createdAt});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -362,18 +365,18 @@ class HabitCompletion extends DataClass implements Insertable<HabitCompletion> {
     return map;
   }
 
-  HabitCompletionsCompanion toCompanion(bool nullToAbsent) {
-    return HabitCompletionsCompanion(
+  HabitCompletionRecordsCompanion toCompanion(bool nullToAbsent) {
+    return HabitCompletionRecordsCompanion(
       habitId: Value(habitId),
       dateKey: Value(dateKey),
       createdAt: Value(createdAt),
     );
   }
 
-  factory HabitCompletion.fromJson(Map<String, dynamic> json,
+  factory HabitCompletionRecord.fromJson(Map<String, dynamic> json,
       {ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
-    return HabitCompletion(
+    return HabitCompletionRecord(
       habitId: serializer.fromJson<String>(json['habitId']),
       dateKey: serializer.fromJson<String>(json['dateKey']),
       createdAt: serializer.fromJson<int>(json['createdAt']),
@@ -389,15 +392,16 @@ class HabitCompletion extends DataClass implements Insertable<HabitCompletion> {
     };
   }
 
-  HabitCompletion copyWith(
+  HabitCompletionRecord copyWith(
           {String? habitId, String? dateKey, int? createdAt}) =>
-      HabitCompletion(
+      HabitCompletionRecord(
         habitId: habitId ?? this.habitId,
         dateKey: dateKey ?? this.dateKey,
         createdAt: createdAt ?? this.createdAt,
       );
-  HabitCompletion copyWithCompanion(HabitCompletionsCompanion data) {
-    return HabitCompletion(
+  HabitCompletionRecord copyWithCompanion(
+      HabitCompletionRecordsCompanion data) {
+    return HabitCompletionRecord(
       habitId: data.habitId.present ? data.habitId.value : this.habitId,
       dateKey: data.dateKey.present ? data.dateKey.value : this.dateKey,
       createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
@@ -406,7 +410,7 @@ class HabitCompletion extends DataClass implements Insertable<HabitCompletion> {
 
   @override
   String toString() {
-    return (StringBuffer('HabitCompletion(')
+    return (StringBuffer('HabitCompletionRecord(')
           ..write('habitId: $habitId, ')
           ..write('dateKey: $dateKey, ')
           ..write('createdAt: $createdAt')
@@ -419,24 +423,25 @@ class HabitCompletion extends DataClass implements Insertable<HabitCompletion> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is HabitCompletion &&
+      (other is HabitCompletionRecord &&
           other.habitId == this.habitId &&
           other.dateKey == this.dateKey &&
           other.createdAt == this.createdAt);
 }
 
-class HabitCompletionsCompanion extends UpdateCompanion<HabitCompletion> {
+class HabitCompletionRecordsCompanion
+    extends UpdateCompanion<HabitCompletionRecord> {
   final Value<String> habitId;
   final Value<String> dateKey;
   final Value<int> createdAt;
   final Value<int> rowid;
-  const HabitCompletionsCompanion({
+  const HabitCompletionRecordsCompanion({
     this.habitId = const Value.absent(),
     this.dateKey = const Value.absent(),
     this.createdAt = const Value.absent(),
     this.rowid = const Value.absent(),
   });
-  HabitCompletionsCompanion.insert({
+  HabitCompletionRecordsCompanion.insert({
     required String habitId,
     required String dateKey,
     required int createdAt,
@@ -444,7 +449,7 @@ class HabitCompletionsCompanion extends UpdateCompanion<HabitCompletion> {
   })  : habitId = Value(habitId),
         dateKey = Value(dateKey),
         createdAt = Value(createdAt);
-  static Insertable<HabitCompletion> custom({
+  static Insertable<HabitCompletionRecord> custom({
     Expression<String>? habitId,
     Expression<String>? dateKey,
     Expression<int>? createdAt,
@@ -458,12 +463,12 @@ class HabitCompletionsCompanion extends UpdateCompanion<HabitCompletion> {
     });
   }
 
-  HabitCompletionsCompanion copyWith(
+  HabitCompletionRecordsCompanion copyWith(
       {Value<String>? habitId,
       Value<String>? dateKey,
       Value<int>? createdAt,
       Value<int>? rowid}) {
-    return HabitCompletionsCompanion(
+    return HabitCompletionRecordsCompanion(
       habitId: habitId ?? this.habitId,
       dateKey: dateKey ?? this.dateKey,
       createdAt: createdAt ?? this.createdAt,
@@ -491,7 +496,7 @@ class HabitCompletionsCompanion extends UpdateCompanion<HabitCompletion> {
 
   @override
   String toString() {
-    return (StringBuffer('HabitCompletionsCompanion(')
+    return (StringBuffer('HabitCompletionRecordsCompanion(')
           ..write('habitId: $habitId, ')
           ..write('dateKey: $dateKey, ')
           ..write('createdAt: $createdAt, ')
@@ -504,31 +509,33 @@ class HabitCompletionsCompanion extends UpdateCompanion<HabitCompletion> {
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
   $AppDatabaseManager get managers => $AppDatabaseManager(this);
-  late final Habits habits = Habits(this);
-  late final HabitCompletions habitCompletions = HabitCompletions(this);
+  late final HabitRecords habitRecords = HabitRecords(this);
+  late final HabitCompletionRecords habitCompletionRecords =
+      HabitCompletionRecords(this);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
   @override
   List<DatabaseSchemaEntity> get allSchemaEntities =>
-      [habits, habitCompletions];
+      [habitRecords, habitCompletionRecords];
 }
 
-typedef $HabitsCreateCompanionBuilder = HabitsCompanion Function({
+typedef $HabitRecordsCreateCompanionBuilder = HabitRecordsCompanion Function({
   Value<int> id,
   required String name,
   required String color,
   required int createdAt,
 });
-typedef $HabitsUpdateCompanionBuilder = HabitsCompanion Function({
+typedef $HabitRecordsUpdateCompanionBuilder = HabitRecordsCompanion Function({
   Value<int> id,
   Value<String> name,
   Value<String> color,
   Value<int> createdAt,
 });
 
-class $HabitsFilterComposer extends FilterComposer<_$AppDatabase, Habits> {
-  $HabitsFilterComposer(super.$state);
+class $HabitRecordsFilterComposer
+    extends FilterComposer<_$AppDatabase, HabitRecords> {
+  $HabitRecordsFilterComposer(super.$state);
   ColumnFilters<int> get id => $state.composableBuilder(
       column: $state.table.id,
       builder: (column, joinBuilders) =>
@@ -550,8 +557,9 @@ class $HabitsFilterComposer extends FilterComposer<_$AppDatabase, Habits> {
           ColumnFilters(column, joinBuilders: joinBuilders));
 }
 
-class $HabitsOrderingComposer extends OrderingComposer<_$AppDatabase, Habits> {
-  $HabitsOrderingComposer(super.$state);
+class $HabitRecordsOrderingComposer
+    extends OrderingComposer<_$AppDatabase, HabitRecords> {
+  $HabitRecordsOrderingComposer(super.$state);
   ColumnOrderings<int> get id => $state.composableBuilder(
       column: $state.table.id,
       builder: (column, joinBuilders) =>
@@ -573,30 +581,32 @@ class $HabitsOrderingComposer extends OrderingComposer<_$AppDatabase, Habits> {
           ColumnOrderings(column, joinBuilders: joinBuilders));
 }
 
-class $HabitsTableManager extends RootTableManager<
+class $HabitRecordsTableManager extends RootTableManager<
     _$AppDatabase,
-    Habits,
-    Habit,
-    $HabitsFilterComposer,
-    $HabitsOrderingComposer,
-    $HabitsCreateCompanionBuilder,
-    $HabitsUpdateCompanionBuilder,
-    (Habit, BaseReferences<_$AppDatabase, Habits, Habit>),
-    Habit,
+    HabitRecords,
+    HabitRecord,
+    $HabitRecordsFilterComposer,
+    $HabitRecordsOrderingComposer,
+    $HabitRecordsCreateCompanionBuilder,
+    $HabitRecordsUpdateCompanionBuilder,
+    (HabitRecord, BaseReferences<_$AppDatabase, HabitRecords, HabitRecord>),
+    HabitRecord,
     PrefetchHooks Function()> {
-  $HabitsTableManager(_$AppDatabase db, Habits table)
+  $HabitRecordsTableManager(_$AppDatabase db, HabitRecords table)
       : super(TableManagerState(
           db: db,
           table: table,
-          filteringComposer: $HabitsFilterComposer(ComposerState(db, table)),
-          orderingComposer: $HabitsOrderingComposer(ComposerState(db, table)),
+          filteringComposer:
+              $HabitRecordsFilterComposer(ComposerState(db, table)),
+          orderingComposer:
+              $HabitRecordsOrderingComposer(ComposerState(db, table)),
           updateCompanionCallback: ({
             Value<int> id = const Value.absent(),
             Value<String> name = const Value.absent(),
             Value<String> color = const Value.absent(),
             Value<int> createdAt = const Value.absent(),
           }) =>
-              HabitsCompanion(
+              HabitRecordsCompanion(
             id: id,
             name: name,
             color: color,
@@ -608,7 +618,7 @@ class $HabitsTableManager extends RootTableManager<
             required String color,
             required int createdAt,
           }) =>
-              HabitsCompanion.insert(
+              HabitRecordsCompanion.insert(
             id: id,
             name: name,
             color: color,
@@ -621,35 +631,35 @@ class $HabitsTableManager extends RootTableManager<
         ));
 }
 
-typedef $HabitsProcessedTableManager = ProcessedTableManager<
+typedef $HabitRecordsProcessedTableManager = ProcessedTableManager<
     _$AppDatabase,
-    Habits,
-    Habit,
-    $HabitsFilterComposer,
-    $HabitsOrderingComposer,
-    $HabitsCreateCompanionBuilder,
-    $HabitsUpdateCompanionBuilder,
-    (Habit, BaseReferences<_$AppDatabase, Habits, Habit>),
-    Habit,
+    HabitRecords,
+    HabitRecord,
+    $HabitRecordsFilterComposer,
+    $HabitRecordsOrderingComposer,
+    $HabitRecordsCreateCompanionBuilder,
+    $HabitRecordsUpdateCompanionBuilder,
+    (HabitRecord, BaseReferences<_$AppDatabase, HabitRecords, HabitRecord>),
+    HabitRecord,
     PrefetchHooks Function()>;
-typedef $HabitCompletionsCreateCompanionBuilder = HabitCompletionsCompanion
-    Function({
+typedef $HabitCompletionRecordsCreateCompanionBuilder
+    = HabitCompletionRecordsCompanion Function({
   required String habitId,
   required String dateKey,
   required int createdAt,
   Value<int> rowid,
 });
-typedef $HabitCompletionsUpdateCompanionBuilder = HabitCompletionsCompanion
-    Function({
+typedef $HabitCompletionRecordsUpdateCompanionBuilder
+    = HabitCompletionRecordsCompanion Function({
   Value<String> habitId,
   Value<String> dateKey,
   Value<int> createdAt,
   Value<int> rowid,
 });
 
-class $HabitCompletionsFilterComposer
-    extends FilterComposer<_$AppDatabase, HabitCompletions> {
-  $HabitCompletionsFilterComposer(super.$state);
+class $HabitCompletionRecordsFilterComposer
+    extends FilterComposer<_$AppDatabase, HabitCompletionRecords> {
+  $HabitCompletionRecordsFilterComposer(super.$state);
   ColumnFilters<String> get habitId => $state.composableBuilder(
       column: $state.table.habitId,
       builder: (column, joinBuilders) =>
@@ -666,9 +676,9 @@ class $HabitCompletionsFilterComposer
           ColumnFilters(column, joinBuilders: joinBuilders));
 }
 
-class $HabitCompletionsOrderingComposer
-    extends OrderingComposer<_$AppDatabase, HabitCompletions> {
-  $HabitCompletionsOrderingComposer(super.$state);
+class $HabitCompletionRecordsOrderingComposer
+    extends OrderingComposer<_$AppDatabase, HabitCompletionRecords> {
+  $HabitCompletionRecordsOrderingComposer(super.$state);
   ColumnOrderings<String> get habitId => $state.composableBuilder(
       column: $state.table.habitId,
       builder: (column, joinBuilders) =>
@@ -685,35 +695,37 @@ class $HabitCompletionsOrderingComposer
           ColumnOrderings(column, joinBuilders: joinBuilders));
 }
 
-class $HabitCompletionsTableManager extends RootTableManager<
+class $HabitCompletionRecordsTableManager extends RootTableManager<
     _$AppDatabase,
-    HabitCompletions,
-    HabitCompletion,
-    $HabitCompletionsFilterComposer,
-    $HabitCompletionsOrderingComposer,
-    $HabitCompletionsCreateCompanionBuilder,
-    $HabitCompletionsUpdateCompanionBuilder,
+    HabitCompletionRecords,
+    HabitCompletionRecord,
+    $HabitCompletionRecordsFilterComposer,
+    $HabitCompletionRecordsOrderingComposer,
+    $HabitCompletionRecordsCreateCompanionBuilder,
+    $HabitCompletionRecordsUpdateCompanionBuilder,
     (
-      HabitCompletion,
-      BaseReferences<_$AppDatabase, HabitCompletions, HabitCompletion>
+      HabitCompletionRecord,
+      BaseReferences<_$AppDatabase, HabitCompletionRecords,
+          HabitCompletionRecord>
     ),
-    HabitCompletion,
+    HabitCompletionRecord,
     PrefetchHooks Function()> {
-  $HabitCompletionsTableManager(_$AppDatabase db, HabitCompletions table)
+  $HabitCompletionRecordsTableManager(
+      _$AppDatabase db, HabitCompletionRecords table)
       : super(TableManagerState(
           db: db,
           table: table,
           filteringComposer:
-              $HabitCompletionsFilterComposer(ComposerState(db, table)),
+              $HabitCompletionRecordsFilterComposer(ComposerState(db, table)),
           orderingComposer:
-              $HabitCompletionsOrderingComposer(ComposerState(db, table)),
+              $HabitCompletionRecordsOrderingComposer(ComposerState(db, table)),
           updateCompanionCallback: ({
             Value<String> habitId = const Value.absent(),
             Value<String> dateKey = const Value.absent(),
             Value<int> createdAt = const Value.absent(),
             Value<int> rowid = const Value.absent(),
           }) =>
-              HabitCompletionsCompanion(
+              HabitCompletionRecordsCompanion(
             habitId: habitId,
             dateKey: dateKey,
             createdAt: createdAt,
@@ -725,7 +737,7 @@ class $HabitCompletionsTableManager extends RootTableManager<
             required int createdAt,
             Value<int> rowid = const Value.absent(),
           }) =>
-              HabitCompletionsCompanion.insert(
+              HabitCompletionRecordsCompanion.insert(
             habitId: habitId,
             dateKey: dateKey,
             createdAt: createdAt,
@@ -738,25 +750,27 @@ class $HabitCompletionsTableManager extends RootTableManager<
         ));
 }
 
-typedef $HabitCompletionsProcessedTableManager = ProcessedTableManager<
+typedef $HabitCompletionRecordsProcessedTableManager = ProcessedTableManager<
     _$AppDatabase,
-    HabitCompletions,
-    HabitCompletion,
-    $HabitCompletionsFilterComposer,
-    $HabitCompletionsOrderingComposer,
-    $HabitCompletionsCreateCompanionBuilder,
-    $HabitCompletionsUpdateCompanionBuilder,
+    HabitCompletionRecords,
+    HabitCompletionRecord,
+    $HabitCompletionRecordsFilterComposer,
+    $HabitCompletionRecordsOrderingComposer,
+    $HabitCompletionRecordsCreateCompanionBuilder,
+    $HabitCompletionRecordsUpdateCompanionBuilder,
     (
-      HabitCompletion,
-      BaseReferences<_$AppDatabase, HabitCompletions, HabitCompletion>
+      HabitCompletionRecord,
+      BaseReferences<_$AppDatabase, HabitCompletionRecords,
+          HabitCompletionRecord>
     ),
-    HabitCompletion,
+    HabitCompletionRecord,
     PrefetchHooks Function()>;
 
 class $AppDatabaseManager {
   final _$AppDatabase _db;
   $AppDatabaseManager(this._db);
-  $HabitsTableManager get habits => $HabitsTableManager(_db, _db.habits);
-  $HabitCompletionsTableManager get habitCompletions =>
-      $HabitCompletionsTableManager(_db, _db.habitCompletions);
+  $HabitRecordsTableManager get habitRecords =>
+      $HabitRecordsTableManager(_db, _db.habitRecords);
+  $HabitCompletionRecordsTableManager get habitCompletionRecords =>
+      $HabitCompletionRecordsTableManager(_db, _db.habitCompletionRecords);
 }

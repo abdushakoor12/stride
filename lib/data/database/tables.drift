@@ -1,11 +1,11 @@
-CREATE TABLE habits (
+CREATE TABLE habitRecords (
   id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
   name TEXT NOT NULL,
   color TEXT NOT NULL,
   createdAt INTEGER NOT NULL
 );
 
-CREATE TABLE habitCompletions (
+CREATE TABLE habitCompletionRecords (
   habitId TEXT NOT NULL,
   dateKey TEXT NOT NULL,
   createdAt INTEGER NOT NULL,
