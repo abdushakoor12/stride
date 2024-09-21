@@ -1,0 +1,13 @@
+CREATE TABLE habits (
+  id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  name TEXT NOT NULL,
+  color TEXT NOT NULL,
+  createdAt INTEGER NOT NULL
+);
+
+CREATE TABLE habitCompletions (
+  habitId TEXT NOT NULL,
+  dateKey TEXT NOT NULL,
+  createdAt INTEGER NOT NULL,
+  PRIMARY KEY (habitId, dateKey)
+);
