@@ -51,6 +51,18 @@ class HabitRepo {
     });
   }
 
+  Stream<List<HabitCompletion>> watchHabitCompletions(DateTime dateTime) {
+    return db
+        .completionOfHabitsOnDate(HabitCompletion.getDateKey(dateTime))
+        .watch()
+        .map((row) {
+      return row.map((e) => HabitCompletion(
+        habitId: e.habitId,
+        timestamp: DateTime.fromMillisecondsSinceEpoch(e.createdAt),
+      )).toList();
+    });
+  }
+
   void deleteHabitCompletion(String id, DateTime dateTime) {
     (db.delete(db.habitCompletionRecords)
           ..where((tbl) => tbl.habitId.equals(id))

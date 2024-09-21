@@ -13,3 +13,5 @@ CREATE TABLE habitCompletionRecords (
 );
 
 completionOfHabitOnDate: SELECT * FROM habitCompletionRecords WHERE habitId = ? AND dateKey = ? LIMIT 1;
+
+completionOfHabitsOnDate: SELECT * FROM habitCompletionRecords WHERE dateKey = ?;

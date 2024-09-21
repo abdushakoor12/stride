@@ -538,6 +538,17 @@ abstract class _$AppDatabase extends GeneratedDatabase {
         }).asyncMap(habitCompletionRecords.mapFromRow);
   }
 
+  Selectable<HabitCompletionRecord> completionOfHabitsOnDate(String var1) {
+    return customSelect(
+        'SELECT * FROM habitCompletionRecords WHERE dateKey = ?1',
+        variables: [
+          Variable<String>(var1)
+        ],
+        readsFrom: {
+          habitCompletionRecords,
+        }).asyncMap(habitCompletionRecords.mapFromRow);
+  }
+
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
