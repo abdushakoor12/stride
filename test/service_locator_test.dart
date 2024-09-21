@@ -22,7 +22,19 @@ void main() {
       locator.add(_TestService());
       expect(locator.get<_TestService>(), locator.get<_TestService>());
     });
+
+    test("override test", () {
+      locator.add<_TestService>(_SubTestService1());
+      expect(locator.get<_TestService>(), isA<_SubTestService1>());
+
+      locator.add<_TestService>(_SubTestService2());
+      expect(locator.get<_TestService>(), isA<_SubTestService2>());
+    });
   });
 }
 
 class _TestService {}
+
+class _SubTestService1 extends _TestService {}
+
+class _SubTestService2 extends _TestService {}
