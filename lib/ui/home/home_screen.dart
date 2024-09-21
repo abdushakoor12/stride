@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:stride/data/habit.dart';
-import 'package:stride/data/habit_completion.dart';
-import 'package:stride/di.dart';
+import 'package:stride/data/habit_repo.dart';
+import 'package:stride/locator.dart';
 import 'package:stride/ui/add_habit/add_habit_screen.dart';
 import 'package:stride/ui/calendar/calendar_screen.dart';
 import 'package:stride/utils/color_ext.dart';
@@ -16,6 +16,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  late final habitRepo = locator.get<HabitRepo>();
   List<Habit> habits = [];
 
   StreamSubscription? _subscription;
@@ -24,7 +25,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
 
-    _subscription = di.habitRepo.watchHabits().listen((value) {
+    _subscription = habitRepo.watchHabits().listen((value) {
       setState(() {
         habits = value;
       });
@@ -71,20 +72,16 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
                 trailing: StreamBuilder(
-                    stream: di.habitRepo.watchHabitCompletion(habit.id, DateTime.now()),
+                    stream: habitRepo.watchHabitCompletion(habit.id, DateTime.now()),
                     builder: (context, snaps) {
                       final isCompleted = snaps.data != null;
                       return GestureDetector(
                         onTap: () {
-                          final key = HabitCompletion.getCompletionKey(
-                            habit.id,
-                            DateTime.now(),
-                          );
-
+                          final dateTime = DateTime.now();
                           if (isCompleted) {
-                            di.habitRepo.deleteHabitCompletion(habit.id, DateTime.now());
+                            habitRepo.deleteHabitCompletion(habit.id, dateTime);
                           } else {
-                            di.habitRepo.insertHabitCompletion(habit.id, DateTime.now());
+                            habitRepo.insertHabitCompletion(habit.id, dateTime);
                           }
                         },
                         child: Container(

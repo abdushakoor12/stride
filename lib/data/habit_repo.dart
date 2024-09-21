@@ -1,15 +1,13 @@
 import 'dart:ui';
 
-import 'package:drift/internal/versioned_schema.dart';
 import 'package:stride/data/database/app_database.dart';
 import 'package:stride/data/habit.dart';
+import 'package:stride/locator.dart';
 
 import 'habit_completion.dart';
 
 class HabitRepo {
-  final AppDatabase db;
-
-  HabitRepo(this.db);
+  late final AppDatabase db = locator.get<AppDatabase>();
 
   Future<void> insertHabit(Habit habit) async {
     await db.into(db.habitRecords).insert(

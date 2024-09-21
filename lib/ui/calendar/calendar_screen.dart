@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:stride/data/habit_completion.dart';
-import 'package:stride/di.dart';
+import 'package:stride/data/habit_repo.dart';
+import 'package:stride/locator.dart';
 
 class CalendarScreen extends StatelessWidget {
   const CalendarScreen({super.key});
@@ -56,7 +56,7 @@ class CalendarScreen extends StatelessWidget {
                     (index) => const SizedBox()),
                 ...calendarChangeNotifier.daysOfMonth
                     .map((day) => StreamBuilder(
-                        stream: di.habitRepo.watchHabitCompletions(day),
+                        stream: locator.get<HabitRepo>().watchHabitCompletions(day),
                         builder: (context, snapshot) {
                           final completions = snapshot.data ?? [];
                           return Container(

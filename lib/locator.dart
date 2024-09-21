@@ -2,17 +2,9 @@ import 'package:stride/data/database/app_database.dart';
 
 import 'data/habit_repo.dart';
 
-final di = _DIContainer();
-
-class _DIContainer {
-  late final AppDatabase db = AppDatabase();
-
-  Future<void> init() async {}
-
-  late final HabitRepo habitRepo = HabitRepo(db);
-}
-
-final locator = ServiceLocator();
+final locator = ServiceLocator()
+  ..add(AppDatabase())
+  ..add(HabitRepo());
 
 class ServiceLocator {
   static final ServiceLocator _instance = ServiceLocator._internal();

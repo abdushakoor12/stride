@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:stride/data/habit.dart';
-import 'package:stride/di.dart';
+import 'package:stride/data/habit_repo.dart';
+import 'package:stride/locator.dart';
 import 'package:stride/utils/color_ext.dart';
 import 'package:stride/utils/generate_id.dart';
 
@@ -12,6 +13,7 @@ class AddHabitScreen extends StatefulWidget {
 }
 
 class _AddHabitScreenState extends State<AddHabitScreen> {
+  late final habitRepo = locator.get<HabitRepo>();
   final _nameController = TextEditingController();
   Color color = Colors.primaries.first;
   @override
@@ -74,7 +76,7 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
                   return;
                 }
 
-                di.habitRepo.insertHabit(Habit(
+                habitRepo.insertHabit(Habit(
                   name: name,
                   color: color,
                   timestamp: DateTime.now(), id: generateId(),
