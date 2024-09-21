@@ -1,7 +1,10 @@
 import 'dart:ui';
 
+import 'package:drift/internal/versioned_schema.dart';
 import 'package:stride/data/database/app_database.dart';
 import 'package:stride/data/habit.dart';
+
+import 'habit_completion.dart';
 
 class HabitRepo {
   final AppDatabase db;
@@ -30,5 +33,38 @@ class HabitRepo {
         );
       }).toList();
     });
+  }
+
+  Stream<HabitCompletion?> watchHabitCompletion(
+      String habitId, DateTime dateTime) {
+    return db
+        .completionOfHabitOnDate(habitId, HabitCompletion.getDateKey(dateTime))
+        .watchSingleOrNull()
+        .map((row) {
+      if (row == null) {
+        return null;
+      }
+      return HabitCompletion(
+        habitId: row.habitId,
+        timestamp: DateTime.fromMillisecondsSinceEpoch(row.createdAt),
+      );
+    });
+  }
+
+  void deleteHabitCompletion(String id, DateTime dateTime) {
+    (db.delete(db.habitCompletionRecords)
+          ..where((tbl) => tbl.habitId.equals(id))
+          ..where((tbl) => tbl.dateKey.equals(HabitCompletion.getDateKey(dateTime))))
+        .go();
+  }
+
+  void insertHabitCompletion(String habitId, DateTime dateTime) {
+    db.into(db.habitCompletionRecords).insert(
+          HabitCompletionRecordsCompanion.insert(
+            habitId: habitId,
+            dateKey: HabitCompletion.getDateKey(dateTime),
+            createdAt: dateTime.millisecondsSinceEpoch,
+          ),
+        );
   }
 }
