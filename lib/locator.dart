@@ -5,7 +5,7 @@ import 'data/habit_repo.dart';
 
 final locator = ServiceLocator()
   ..addLazy<AppDatabase>(() => AppDatabase())
-  ..add(HabitRepo());
+  ..add<HabitRepo>(HabitRepoImpl());
 
 class ServiceLocator {
   static final ServiceLocator _instance = ServiceLocator._internal();

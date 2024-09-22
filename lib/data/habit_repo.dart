@@ -6,9 +6,19 @@ import 'package:stride/locator.dart';
 
 import 'habit_completion.dart';
 
-class HabitRepo {
+abstract class HabitRepo {
+  Future<void> insertHabit(Habit habit);
+  Stream<List<Habit>> watchHabits();
+  Stream<HabitCompletion?> watchHabitCompletion(String habitId, DateTime dateTime);
+  Stream<List<HabitCompletion>> watchHabitCompletions(DateTime dateTime);
+  Future<void> deleteHabitCompletion(String id, DateTime dateTime);
+  Future<void> insertHabitCompletion(String habitId, DateTime dateTime);
+}
+
+class HabitRepoImpl extends HabitRepo {
   late final AppDatabase db = locator.get<AppDatabase>();
 
+  @override
   Future<void> insertHabit(Habit habit) async {
     await db.into(db.habitRecords).insert(
           HabitRecordsCompanion.insert(
@@ -20,6 +30,7 @@ class HabitRepo {
         );
   }
 
+  @override
   Stream<List<Habit>> watchHabits() {
     return db.select(db.habitRecords).watch().map((rows) {
       return rows.map((row) {
@@ -33,6 +44,7 @@ class HabitRepo {
     });
   }
 
+  @override
   Stream<HabitCompletion?> watchHabitCompletion(
       String habitId, DateTime dateTime) {
     return db
@@ -49,6 +61,7 @@ class HabitRepo {
     });
   }
 
+  @override
   Stream<List<HabitCompletion>> watchHabitCompletions(DateTime dateTime) {
     return db
         .completionOfHabitsOnDate(HabitCompletion.getDateKey(dateTime))
@@ -61,14 +74,16 @@ class HabitRepo {
     });
   }
 
-  void deleteHabitCompletion(String id, DateTime dateTime) {
+  @override
+  Future<void> deleteHabitCompletion(String id, DateTime dateTime) async {
     (db.delete(db.habitCompletionRecords)
           ..where((tbl) => tbl.habitId.equals(id))
           ..where((tbl) => tbl.dateKey.equals(HabitCompletion.getDateKey(dateTime))))
         .go();
   }
 
-  void insertHabitCompletion(String habitId, DateTime dateTime) {
+  @override
+  Future<void> insertHabitCompletion(String habitId, DateTime dateTime) async {
     db.into(db.habitCompletionRecords).insert(
           HabitCompletionRecordsCompanion.insert(
             habitId: habitId,

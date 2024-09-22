@@ -58,55 +58,64 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ],
       ),
-      body: ListView.builder(
-        itemCount: habits.length,
-        itemBuilder: (context, index) {
-          final habit = habits[index];
-          return Card(
-            margin: const EdgeInsets.all(8),
-            color: habit.color,
-            child: ListTile(
-                title: Text(
-                  habit.name,
-                  style: TextStyle(
-                    color: habit.color.foregroundByLuminance,
-                    fontSize: 20,
+      body: habits.isEmpty
+          ? Center(
+              child: Text(
+              'No Habits Found',
+              style: Theme.of(context).textTheme.headlineMedium,
+            ))
+          : ListView.builder(
+              itemCount: habits.length,
+              itemBuilder: (context, index) {
+                final habit = habits[index];
+                return Card(
+                  margin: const EdgeInsets.all(8),
+                  color: habit.color,
+                  child: ListTile(
+                    title: Text(
+                      habit.name,
+                      style: TextStyle(
+                        color: habit.color.foregroundByLuminance,
+                        fontSize: 20,
+                      ),
+                    ),
+                    trailing: StreamBuilder(
+                        stream: habitRepo.watchHabitCompletion(
+                            habit.id, DateTime.now()),
+                        builder: (context, snaps) {
+                          final isCompleted = snaps.data != null;
+                          return GestureDetector(
+                            onTap: () {
+                              final dateTime = DateTime.now();
+                              if (isCompleted) {
+                                habitRepo.deleteHabitCompletion(
+                                    habit.id, dateTime);
+                              } else {
+                                habitRepo.insertHabitCompletion(
+                                    habit.id, dateTime);
+                              }
+                            },
+                            child: Container(
+                              width: 40,
+                              height: 40,
+                              decoration: BoxDecoration(
+                                color: habit.color.foregroundByLuminance,
+                                borderRadius: BorderRadius.circular(4),
+                              ),
+                              child: isCompleted
+                                  ? Icon(
+                                      Icons.check_outlined,
+                                      size: 32,
+                                      color: habit.color,
+                                    )
+                                  : const SizedBox(),
+                            ),
+                          );
+                        }),
                   ),
-                ),
-                trailing: StreamBuilder(
-                    stream: habitRepo.watchHabitCompletion(habit.id, DateTime.now()),
-                    builder: (context, snaps) {
-                      final isCompleted = snaps.data != null;
-                      return GestureDetector(
-                        onTap: () {
-                          final dateTime = DateTime.now();
-                          if (isCompleted) {
-                            habitRepo.deleteHabitCompletion(habit.id, dateTime);
-                          } else {
-                            habitRepo.insertHabitCompletion(habit.id, dateTime);
-                          }
-                        },
-                        child: Container(
-                          width: 40,
-                          height: 40,
-                          decoration: BoxDecoration(
-                            color: habit.color.foregroundByLuminance,
-                            borderRadius: BorderRadius.circular(4),
-                          ),
-                          child: isCompleted
-                              ? Icon(
-                                  Icons.check_outlined,
-                                  size: 32,
-                                  color: habit.color,
-                                )
-                              : const SizedBox(),
-                        ),
-                      );
-                    }),
+                );
+              },
             ),
-          );
-        },
-      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.push(
