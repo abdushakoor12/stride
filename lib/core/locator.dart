@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:stride/data/database/app_database.dart';
 
-import 'data/habit_repo.dart';
+import '../data/model/habits/habit_repo.dart';
 
 final locator = ServiceLocator()
   ..addLazy<AppDatabase>(() => AppDatabase())

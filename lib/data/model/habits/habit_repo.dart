@@ -1,8 +1,8 @@
 import 'dart:ui';
 
 import 'package:stride/data/database/app_database.dart';
-import 'package:stride/data/habit.dart';
-import 'package:stride/locator.dart';
+import 'package:stride/data/model/habits/habit.dart';
+import 'package:stride/core/locator.dart';
 
 import 'habit_completion.dart';
 

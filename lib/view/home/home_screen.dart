@@ -1,12 +1,12 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:stride/data/habit.dart';
-import 'package:stride/data/habit_repo.dart';
-import 'package:stride/locator.dart';
-import 'package:stride/ui/add_habit/add_habit_screen.dart';
-import 'package:stride/ui/calendar/calendar_screen.dart';
+import 'package:stride/data/model/habits/habit.dart';
+import 'package:stride/data/model/habits/habit_repo.dart';
+import 'package:stride/core/locator.dart';
+import 'package:stride/view/add_habit/add_habit_screen.dart';
 import 'package:stride/utils/color_ext.dart';
+import 'package:stride/view/calendar/calendar_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});

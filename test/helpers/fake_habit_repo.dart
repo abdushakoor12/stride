@@ -1,6 +1,6 @@
-import 'package:stride/data/habit.dart';
-import 'package:stride/data/habit_completion.dart';
-import 'package:stride/data/habit_repo.dart';
+import 'package:stride/data/model/habits/habit.dart';
+import 'package:stride/data/model/habits/habit_completion.dart';
+import 'package:stride/data/model/habits/habit_repo.dart';
 
 class FakeHabitRepo extends HabitRepo {
   final List<Habit> habits = [];

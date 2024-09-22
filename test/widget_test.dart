@@ -7,11 +7,11 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:stride/data/habit.dart';
-import 'package:stride/data/habit_repo.dart';
-import 'package:stride/locator.dart';
+import 'package:stride/data/model/habits/habit.dart';
+import 'package:stride/data/model/habits/habit_repo.dart';
+import 'package:stride/core/locator.dart';
 import 'package:stride/main.dart';
-import 'package:stride/ui/home/home_screen.dart';
+import 'package:stride/view/home/home_screen.dart';
 
 import 'helpers/fake_habit_repo.dart';
 

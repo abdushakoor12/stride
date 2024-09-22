@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:stride/ui/home/home_screen.dart';
+import 'package:stride/view/home/home_screen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

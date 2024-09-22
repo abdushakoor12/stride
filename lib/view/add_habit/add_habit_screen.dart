@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:stride/data/habit.dart';
-import 'package:stride/data/habit_repo.dart';
-import 'package:stride/locator.dart';
+import 'package:stride/data/model/habits/habit.dart';
+import 'package:stride/data/model/habits/habit_repo.dart';
+import 'package:stride/core/locator.dart';
 import 'package:stride/utils/color_ext.dart';
 import 'package:stride/utils/generate_id.dart';
 

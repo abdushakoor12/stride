@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:stride/locator.dart';
+import 'package:stride/core/locator.dart';
 
 void main() {
 

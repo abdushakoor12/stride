@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:stride/data/habit_repo.dart';
-import 'package:stride/locator.dart';
+import 'package:stride/data/model/habits/habit_repo.dart';
+import 'package:stride/core/locator.dart';
 
 class CalendarScreen extends StatelessWidget {
   const CalendarScreen({super.key});
